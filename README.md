@@ -19,6 +19,7 @@ Lambda function definitions:
 You can use the Cloud Formation template to create the function or create it manualy.
 Cloud Formation uses a bucket to create a Lambda function, change teh template as you need.
 The function requeres a python file named as lambda_function.py, this file have to be in the zip file in teh bucket.
+File "sg_lambda.zip" it´s an example how you have to put in your bucket.
 
 To automate add new IPs/ranges in security group, you must create a SNS subscription to AWS notification service AmazonIpSpaceChanged, use AWS cli:
 
