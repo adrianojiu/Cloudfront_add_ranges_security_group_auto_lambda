@@ -7,7 +7,7 @@ If a rule exist the creation of that will be skipped.
 By default you can create up to 60 rules in a security group, if you need more than 60 rules in a security group request to AWS to increase a number of rules tha you can create in a security groups, I recomend 200 rules per security group.
 To invoke this function manualy use aws cli:
 
-    aws lambda invoke --function-name  sg-add-manual-cloudfront-global-edge-ips-rule-lambda output.json
+    aws lambda invoke --function-name PUT_YOUR_LAMBDA_FUNCTION_NAME_HERE output.json
 
 Lambda function definitions:
     Runtime: Python 3.9.
