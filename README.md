@@ -26,3 +26,19 @@ To automate add new IPs/ranges in security group, you must create a SNS subscrip
     aws sns subscribe --topic-arn arn:aws:sns:us-east-1:806199016981:AmazonIpSpaceChanged --protocol lambda --notification-endpoint "put your lambda arn here"
 
 When ip changes happened in AWS services it will be updated in security group "security_group_id".
+
+Files description:
+
+"cloudformation_create_lambda_function.json"
+It is a Cloud formatio template wich creates a lambda function, you can create lambda function manualy instead.
+
+"iam_policy_role_sample.json"
+It is a example of policy to allow lambda function create rules.
+
+"sg-cloudfront-global-edge-ips-rule-lambda.py"
+It is a code called by lambda function wich createssecurity group rules.
+
+"sg_lambda.zip"
+It is an example of file used by Cloud formation to create alambda function, you must save the python script as "lambda_function.py" and put into a zip file, and refer this zip file in the Cloud formation template.
+
+
