@@ -1,0 +1,29 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:RevokeSecurityGroupIngress",
+                "ec2:AuthorizeSecurityGroupIngress",
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup",
+                "logs:PutLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:ec2:*:YOUR_AWS_ACCOUNT_HERE:security-group/*",
+                "arn:aws:logs:*:*:*"
+            ]
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "ec2:DescribeSecurityGroups"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
