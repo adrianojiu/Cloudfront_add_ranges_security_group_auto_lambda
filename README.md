@@ -41,4 +41,7 @@ It is a code called by lambda function wich createssecurity group rules.
 "sg_lambda.zip"
 It is an example of file used by Cloud formation to create alambda function, you must save the python script as "lambda_function.py" and put into a zip file, and refer this zip file in the Cloud formation template.
 
+The flow to put it on work is:
+
+Create IAM role --> Create Lambda function --> Create SNS subscription.
 
