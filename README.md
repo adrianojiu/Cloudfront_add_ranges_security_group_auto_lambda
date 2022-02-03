@@ -1,5 +1,5 @@
 # Cloudfront_add_ranges_security_group_auto_lambda
-Add Cloudfront IP ranges in a specific group using a Lambdafunction called by a SNS subscription as soon as AWS change ranges.
+Add Cloudfront IP ranges in a specific group using a Lambda function called by a SNS subscription as soon as AWS change ranges.
 
 This script creates rules in a security group which contains subnet/ips for CloudFront Global and Edge locations.
 Change variables as you need.
