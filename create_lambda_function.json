@@ -1,0 +1,20 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+"Resources": {
+  "CreateFunctionTest": {
+    "Type" : "AWS::Lambda::Function",
+    "Properties" : {
+        "Code" : {
+            "S3Bucket": "lambda-functions-bucket",
+            "S3Key": "lambda-functions/sg_lambda.zip"
+        },
+        "Description" : "Creates SG rules to allow Cloudfront IP ranges",
+        "FunctionName" : "add-cloudfront-ip-ranges",
+        "Handler" : "lambda_function.lambda_handler",
+        "Role" : "put_your_role_here",
+        "Runtime" : "python3.9",
+        "Timeout" : 300
+      }
+    }
+  }
+}
