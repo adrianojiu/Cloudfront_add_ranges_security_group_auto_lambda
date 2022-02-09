@@ -25,69 +25,46 @@ To automate add new IPs/ranges in security group, you must create a SNS subscrip
 
 When ip changes happened in AWS services it will be updated in security group "security_group_id".
 
-
-
 '''
 security_group_id = "sg-01010101010101010"  # Set Security Group ID
 port_range_start = 80                       # Set port range to be opened.
 port_range_end = 80                         # Set port range to be opened.
 protocol = "tcp"                            # Set rule protocol.
 url_cf_ip = "https://d7uri8nf7uskq.cloudfront.net/tools/list-cloudfront-ips"        # Cloudfront ips url api.
-description_global = "CloudfrontGlobalIPandNetwork"      # Rules description.
-description_edge = "CloudfrontEdgeIPandNetwork"          # Rules description.
+description_all = "CloudFrontRange"
 
+response = urlopen(url_cf_ip)                                           # Getting IPs in AWS api.
+data_json = json.loads(response.read())                                 # Storing the JSON response from url in data.
+
+data_json_ip_edg = data_json['CLOUDFRONT_REGIONAL_EDGE_IP_LIST']        # Getting cloudfront edge ips.
+data_json_ip_glo = data_json['CLOUDFRONT_GLOBAL_IP_LIST']               # Getting cloudfront global ips.
+data_json_ip_append = data_json_ip_edg + data_json_ip_glo               # Put ips together.
+
+client = boto3.Session().resource('ec2')
+security_group = client.SecurityGroup(security_group_id)
+
+#
 def lambda_handler(event, context):
-    # Make AWS session.
-    client = boto3.Session().resource('ec2')
-    security_group = client.SecurityGroup(security_group_id)
+    
+    # Remove all rules. 
+    security_group.revoke_ingress(IpPermissions=security_group.ip_permissions)
 
-    response = urlopen(url_cf_ip)                                           # Getting IPs in AWS api.
-    data_json = json.loads(response.read())                                 # Storing the JSON response from url in data.
+    # Add rules cloudfront global and edge ranges.
+    for ip_i_all in data_json_ip_append: 
 
-    # Add rules cloudfront global.
-    data_json_ip_glo = data_json['CLOUDFRONT_GLOBAL_IP_LIST']               # Getting cloudfront global ips.
-    for ip_i_glo in data_json_ip_glo: 
-        
         try:
             # Creating rule for each IP in the list.
             security_group.authorize_ingress(
-                DryRun=False,
-                IpPermissions=[
+            DryRun=False,
+            IpPermissions=[
                     {
                         'FromPort': port_range_start,
                         'ToPort': port_range_end,
                         'IpProtocol': protocol,
                         'IpRanges': [
                             {
-                                'CidrIp': ip_i_glo,
-                                'Description': description_global
-                            },
-                        ]
-                    }
-                ]
-            )
-        except Exception as error:
-            error_strig = str(error)
-            print(error_strig)
-
-
-    # Create global IP rules.
-    data_json_ip_edg = data_json['CLOUDFRONT_REGIONAL_EDGE_IP_LIST']        # Getting cloudfront edge ips.
-    for ip_i_edg in data_json_ip_edg: 
-        
-        try:
-            # Creating rule for each IP in the list.
-            security_group.authorize_ingress(
-                DryRun=False,
-                IpPermissions=[
-                    {
-                        'FromPort': port_range_start,
-                        'ToPort': port_range_end,
-                        'IpProtocol': protocol,
-                        'IpRanges': [
-                            {
-                                'CidrIp': ip_i_edg,
-                                'Description': description_edge
+                                'CidrIp': ip_i_all,
+                                'Description': description_all
                             },
                         ]
                     }
