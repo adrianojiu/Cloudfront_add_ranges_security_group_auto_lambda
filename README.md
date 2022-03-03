@@ -46,4 +46,3 @@ The flow to put it on work is:
 Create IAM role --> Create Lambda function --> Create SNS subscription.
 
 Caution: Use a dedicated security group for that, all rules are removed and recreated when lambda funtion is called.
-
